@@ -15,12 +15,22 @@ namespace Chroma.SabreVGA.TextEditor.SyntaxHighlighting
             _owner = owner;
         }
 
+        public void Clear()
+        {
+            _highlightingRules.Clear();
+        }
+
         public void ApplyRule(SyntaxRule rule)
         {
             if (rule == null)
                 throw new ArgumentNullException(nameof(rule), "Cannot apply a null highlighting rule.");
             
             _highlightingRules.Add(rule);
+        }
+
+        public void ApplyRule<T>() where T : SyntaxRule, new()
+        {
+            ApplyRule(new T());
         }
 
         public void Colorize(string s, int tx, int ty)
