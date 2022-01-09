@@ -4,7 +4,7 @@ namespace Chroma.SabreVGA.TextEditor.DataModel
 {
     public struct Selection : IEquatable<Selection>
     {
-        public static readonly Selection None = new Selection
+        public static readonly Selection None = new()
         {
             StartColumn = -1,
             StartLine = -1,
