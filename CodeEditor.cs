@@ -32,7 +32,7 @@ namespace Chroma.SabreVGA.TextEditor
         public SyntaxHighlighter Highlighter { get; }
 
         public StatusLine StatusLine { get; }
-        
+
         public bool ShiftDown
             => Keyboard.IsKeyDown(KeyCode.LeftShift)
                || Keyboard.IsKeyDown(KeyCode.RightShift);
@@ -88,7 +88,7 @@ namespace Chroma.SabreVGA.TextEditor
         {
             _currentBufferIndex = 0;
             Buffers.Clear();
-            
+
             QuitRequest?.Invoke();
         }
 
@@ -199,11 +199,15 @@ namespace Chroma.SabreVGA.TextEditor
 
         private void HighlightCurrentLine()
         {
+            if (CurrentBuffer == null)
+                return;
+
             var y = Screen.Margins.Top + CurrentBuffer.CurrentLineIndex - CurrentBuffer.Top;
 
             for (var x = Screen.Margins.Left; x < Screen.WindowColumns; x++)
             {
-                Screen[x, y].Background = _lineHighlightColor;
+                if (Screen[x, y].Background == Screen.ActiveBackgroundColor)
+                    Screen[x, y].Background = _lineHighlightColor;
             }
         }
 
@@ -222,8 +226,8 @@ namespace Chroma.SabreVGA.TextEditor
                             Screen.SetColorAt(
                                 Screen.Margins.Left + j,
                                 Screen.Margins.Top + (i - CurrentBuffer.Top),
-                                Screen.ActiveForegroundColor,
-                                ColorUtilities.CalculateContrastingColor(Screen.ActiveForegroundColor)
+                                ColorUtilities.CalculateContrastingColor(Screen.ActiveForegroundColor),
+                                Screen.ActiveForegroundColor
                             );
                         }
                     }
