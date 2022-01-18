@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using System.Xml;
 using Chroma.Input;
 using Chroma.SabreVGA.TextEditor.DataModel;
 
@@ -20,22 +21,29 @@ namespace Chroma.SabreVGA.TextEditor.KeyBindings
             {
                 buffer.Owner.StatusLine.ReadLine("Path: ", s =>
                 {
-                    if (s.Intersect(Path.GetInvalidPathChars()).Any())
-                    {
-                        buffer.Owner.StatusLine.SetMessage("The path provided was invalid.");
-                    }
-                    else
-                    {
-                        buffer.FilePath = s;
-                    }
+                    buffer.FilePath = s;
+                    Write(buffer);
                 });
             }
+            else
+            {
+                Write(buffer);
+            }
+        }
 
+        private static void Write(Buffer buffer)
+        {
             if (!string.IsNullOrEmpty(buffer.FilePath) && buffer.Owner.FileSaveAction != null)
             {
                 var text = string.Join('\n', buffer.Lines.Select(l => l.Text));
-
-                buffer.Owner.FileSaveAction(buffer.FilePath, text);
+                var status = buffer.Owner.FileSaveAction(buffer.FilePath, text);
+                
+                if (status != 0)
+                {
+                    buffer.Owner.StatusLine.SetMessage($"Failed to save the file. Error code: {status}");
+                    return;
+                }
+                
                 buffer.UpdateHash();
             }
         }

@@ -24,7 +24,7 @@ namespace Chroma.SabreVGA.TextEditor
         public List<Buffer> Buffers { get; } = new();
         public Options Options { get; set; } = new();
 
-        public Action<string, string> FileSaveAction { get; set; }
+        public Func<string, string, int> FileSaveAction { get; set; }
         public Func<string, bool> FileExistsFunc { get; set; }
         public Action QuitRequest { get; set; }
 
@@ -101,7 +101,7 @@ namespace Chroma.SabreVGA.TextEditor
             {
                 if (StatusLine.TakingInput)
                 {
-                    Screen.Cursor.X = StatusLine.Prompt.Length + StatusLine.CaretIndex + 1;
+                    Screen.Cursor.X = StatusLine.Prompt.Length + StatusLine.CaretIndex;
                     Screen.Cursor.Y = Screen.TotalRows - 1;
                 }
                 else
