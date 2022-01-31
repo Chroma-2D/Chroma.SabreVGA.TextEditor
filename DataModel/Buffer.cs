@@ -48,7 +48,7 @@ namespace Chroma.SabreVGA.TextEditor.DataModel
             Owner = owner;
 
             if (initialLines == null)
-                Lines = new List<Line>() {new Line()};
+                Lines = new List<Line>() {new()};
             else
                 Lines = new List<Line>(initialLines);
 
@@ -219,6 +219,9 @@ namespace Chroma.SabreVGA.TextEditor.DataModel
             if (CurrentLineIndex == 0)
                 return;
 
+            if (!Selection.IsNone)
+                Selection = Selection.None;
+            
             var tmp = Lines[CurrentLineIndex - 1];
             Lines[CurrentLineIndex - 1] = Lines[CurrentLineIndex];
             Lines[CurrentLineIndex] = tmp;
@@ -230,6 +233,9 @@ namespace Chroma.SabreVGA.TextEditor.DataModel
         {
             if (CurrentLineIndex == Lines.Count - 1)
                 return;
+            
+            if (!Selection.IsNone)
+                Selection = Selection.None;
 
             var tmp = Lines[CurrentLineIndex + 1];
             Lines[CurrentLineIndex + 1] = Lines[CurrentLineIndex];

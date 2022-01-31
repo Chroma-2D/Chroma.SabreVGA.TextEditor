@@ -1,6 +1,4 @@
-using System.IO;
 using System.Linq;
-using System.Xml;
 using Chroma.Input;
 using Chroma.SabreVGA.TextEditor.DataModel;
 

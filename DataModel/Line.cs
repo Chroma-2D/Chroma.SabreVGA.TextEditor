@@ -2,7 +2,7 @@ namespace Chroma.SabreVGA.TextEditor.DataModel
 {
     public class Line
     {
-        private int _caretIndex = 0;
+        private int _caretIndex;
 
         public string Text { get; set; }
 
